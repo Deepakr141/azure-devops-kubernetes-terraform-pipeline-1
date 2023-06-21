@@ -21,8 +21,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const email = require('emailjs');
-
+            
             const smtpServer = 'your-smtp-server';	
             const smtpPort = 587;
             const smtpUsername = 'your-smtp-username';
