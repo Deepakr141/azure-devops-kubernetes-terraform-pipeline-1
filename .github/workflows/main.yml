@@ -26,8 +26,8 @@ jobs:
             const smtpPort = 587;
             const smtpUsername = 'deepak.r141@gmail.com';
             
-            const from = 'your-email@example.com';
-            const to = 'recipient-email@example.com';
+            const from = 'deepak.r141@gmail.com';
+            const to = 'deepak.r141@gmail.com';
             const subject = 'Cucumber Reports';
             const body = 'Please find attached the Cucumber reports.';
 
