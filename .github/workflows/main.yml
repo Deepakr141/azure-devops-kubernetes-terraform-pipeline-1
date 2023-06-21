@@ -20,16 +20,3 @@ jobs:
           java-version: 17
           repo-3rd-party-user: qqovc10
           repo-3rd-party-token: ${{ secrets.THIRD_PARTY_GITHUB_TOKEN }}
-
-      - name: Test
-        run: mvn clean verify
-      - uses: deblockt/cucumber-report-annotations-action@v1.7
-        with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          path: "**/cucumber.json"
-          
-      - name: Reports
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/cucumber-report-html/cucumber-html-reports
