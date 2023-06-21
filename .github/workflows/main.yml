@@ -16,3 +16,43 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      
+      - name: Send Email with Reports
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const email = require('emailjs');
+
+            const smtpServer = 'your-smtp-server';	
+            const smtpPort = 587;
+            const smtpUsername = 'your-smtp-username';
+            const smtpPassword = 'your-smtp-password';
+
+            const from = 'your-email@example.com';
+            const to = 'recipient-email@example.com';
+            const subject = 'Cucumber Reports';
+            const body = 'Please find attached the Cucumber reports.';
+
+            const server = email.server.connect({
+              user: smtpUsername,
+              password: smtpPassword,
+              host: smtpServer,
+              port: smtpPort,
+              ssl: false
+            });
+
+            server.send(
+              {
+                text: body,
+                from: from,
+                to: to,
+                subject: subject,
+                attachment: [
+                  { path: 'path/to/cucumber/report.html', type: 'text/html', name: 'Cucumber Report.html' }
+                ]
+              },
+              (err, message) => {
+                console.log(err || message);
+              }
+            );
+  
