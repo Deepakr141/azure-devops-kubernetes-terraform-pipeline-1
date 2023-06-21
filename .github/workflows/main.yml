@@ -22,11 +22,10 @@ jobs:
         with:
           script: |
             
-            const smtpServer = 'your-smtp-server';	
+            const smtpServer = 'smtp.gmail.com';	
             const smtpPort = 587;
-            const smtpUsername = 'your-smtp-username';
-            const smtpPassword = 'your-smtp-password';
-
+            const smtpUsername = 'deepak.r141@gmail.com';
+            
             const from = 'your-email@example.com';
             const to = 'recipient-email@example.com';
             const subject = 'Cucumber Reports';
