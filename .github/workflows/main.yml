@@ -1,18 +1,35 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+# This workflow will build the project, run the Cucumber tests,
+# publish the test results as a build summary.
+name: Build E2E Test Suite
+
+on:
+  workflow_dispatch:
+
 jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
+  build:
+   
+    runs-on: [ 'atc-ubuntu-latest' ]
+    
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
+      - name: Checkout
         uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+       
+      - name: JDK and Maven
+        uses: QMC/qmc-github-actions/setup-jdk-maven@v1
+        with:
+          java-version: 17
+          repo-3rd-party-user: qqovc10
+          repo-3rd-party-token: ${{ secrets.THIRD_PARTY_GITHUB_TOKEN }}
+
+      - name: Test
+        run: mvn clean verify
+      - uses: deblockt/cucumber-report-annotations-action@v1.7
+        with:
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+          path: "**/cucumber.json"
+          
+      - name: Reports
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/cucumber-report-html/cucumber-html-reports
