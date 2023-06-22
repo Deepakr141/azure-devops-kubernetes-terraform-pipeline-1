@@ -7,10 +7,10 @@ on:
 
 jobs:
   build:
-   
-    runs-on: [ 'atc-ubuntu-latest' ]
+      name: Build, Generate Reports, Publish, notify
+      runs-on: [ 'atc-ubuntu-latest' ]
     
-    steps:
+      steps:
       - name: Checkout
         uses: actions/checkout@v3
        
@@ -20,6 +20,11 @@ jobs:
           java-version: 17
           repo-3rd-party-user: qqovc10
           repo-3rd-party-token: ${{ secrets.THIRD_PARTY_GITHUB_TOKEN }}
+
+      - name:  Install Google Chrome 
+        run:   |
+              chmod +x ./scripts/InstallChrome.sh
+                          ./scripts/InstallChrome.sh
 
       - name: Test
         run: mvn clean verify
@@ -33,3 +38,26 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/cucumber-report-html/cucumber-html-reports
+
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+         connection_url: smtp://deepak.r141@gmail.com:azrb fgcg bxqq umrr@smtp.gmail.com:587
+         server_address: smtp.gmail.com
+         server_port: 587
+    # Optional whether this connection use TLS (default is true if server_port is 465)
+         secure: true
+    # Optional (recommended) mail server username:
+         username: deepak.r141@gmail.com
+    # Optional (recommended) mail server password:
+         password: azrb fgcg bxqq umrr
+    # Required mail subject:
+         subject: Github Actions job result
+    # Required recipients' addresses:
+         to: deepak.r141@gmail.com
+    # Required sender full name (address can be skipped):
+         from: Deepak R
+    # Optional plain body:
+         body: Cucumber Test Report job ${{github.repository}} generated successfully!
+               https://atc-github.azure.cloud.bmw/login?return_to=https%3A%2F%2Fpages.atc-github.azure.cloud.bmw%2FQMC%2Fovc-e2e-test-suite%2Foverview-features.html
+               https://reports.cucumber.io/reports/547e6b7e-1354-4ca5-94e8-5dd981db1a38
